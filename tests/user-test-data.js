@@ -1,4 +1,4 @@
-let usersTestData = {
+let userTestData = {
     "name": "Saige O'Kon",
     "id": 1,
     "pantry": [
@@ -149,4 +149,4 @@ let usersTestData = {
     ]
   };
 
-    module.exports = usersTestData;
+    module.exports = userTestData;
