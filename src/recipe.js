@@ -13,11 +13,11 @@ class Recipe {
 
   getTotalCost(allIngredients) {
     const formattedIngredients = this.ingredients.reduce((acc, ingredient) => {
-        const ingredientObj = {}
-        ingredientObj['id'] = ingredient.id
-        ingredientObj['amount'] = ingredient.quantity.amount
-        acc.push(ingredientObj)
-      return acc
+      const ingredientObj = {}
+      ingredientObj['id'] = ingredient.id
+      ingredientObj['amount'] = ingredient.quantity.amount
+      acc.push(ingredientObj)
+    return acc
     }, [])
 
     const totalCost = formattedIngredients.reduce((acc, ingredient) => {
@@ -31,3 +31,7 @@ class Recipe {
 };
 
 module.exports = Recipe;
+
+// if (typeof module !== ‘undefined’) {
+//   module.exports = Recipe;
+// }
