@@ -3,7 +3,7 @@ const homePage = document.querySelector('.home-page');
 const favoritesPage = document.querySelector('.favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
-let recipes
+let recipes;
 
 let domMeals = {
   displayMeals(recipe) {
@@ -16,9 +16,9 @@ let domMeals = {
         <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
       </div>
       <div class="card-icon-container">
-        <img id="${recipe.name}" class="icon active hidden"src="https://img.icons8.com/color/96/000000/hearts.png"/>
-        <img id="${recipe.name}" class="icon inactive" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
-        <img id="${recipe.name}" class="icon cook-ready" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
+        <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="icon cook-ready ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
       </div>
     </div>`
   }
@@ -37,8 +37,8 @@ function clickHandler(event) {
   let target = event.target;
   event.target.classList.contains('home-btn') ? displayHomePage() : null;
   event.target.classList.contains('favorites-btn') ? displayFavoritesPage() : null;
-  event.target.classList.contains('food-img') ? displayMealPage(target) : null;
-  // event.target.classList.contains()
+  event.target.classList.contains('food-img') ? displayMealPage() : null;
+  event.target.classList.contains('favorite-icon') ? addMealToFavorites(target) : null;
 
   // if event target is favorites heart - call user method addtofaves
   // if card is already in add to faves - then PUSH OUT of faves and change heart
@@ -50,7 +50,7 @@ function clickHandler(event) {
 function loadUser() {
   let userSelected = usersData[Math.floor(Math.random() * usersData.length)]
   user = new User(userSelected);
-  console.log('three', user);
+  console.log('userLoad', user);
   return user
 }
 
@@ -90,6 +90,8 @@ function showMeals() {
   recipes = recipeData.map(recipe => {
     mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
     return new Recipe(recipe)
+  // recipeData.forEach(recipe => {
+  //   mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
   })
   console.log('original Data', recipeData);
   console.log('new dats', recipes);
@@ -114,6 +116,14 @@ function displayMealPage(target) {
   mealPage.insertAdjacentHTML('afterbegin', domSelectedMeal.loadSelectedRecipe(recipe))
   homePage.classList.add('hidden');
   favoritesPage.classList.add('hidden');
+}
+
+function addMealToFavorites(target) {
+  console.log('thingclicked', target)
+  console.log('alldata', recipeData)
+  const targetRecipe = recipeData.find(recipe => target.id === recipe[i].id)
+  console.log(targetRecipe)
+  user.addToFavorites(targetRecipe)
 }
 
 function filterByType() {
