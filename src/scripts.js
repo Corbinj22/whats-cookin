@@ -49,14 +49,15 @@ function clickHandler(event) {
 
 function loadUser() {
   let userSelected = usersData[Math.floor(Math.random() * usersData.length)]
-  user = new User(userSelected);
-  console.log('three', user);
+  user = new User(userSelected, Pantry);
+  user.pantry.getIngredientDetails(ingredientsData)
   return user
 }
 
 let domSelectedMeal = {
   loadSelectedRecipe(recipe) {
-    console.log('whole recipie', recipe);
+    let missingItems = user.pantry.requiredForMeal(recipe);
+    console.log(missingItems);
 
     return `
     <div class='meal-details-picked'>
@@ -68,20 +69,19 @@ let domSelectedMeal = {
       </div>
     </div>
     <div class="required-to-cook">
-      <div class="required-title">
-        <p>Your pantry is missing the following ingredients to cook this meal:</p>
+      <div class="required-title-box">
+        <p>Your pantry is missing the following ingredient(s) to cook this meal:</p>
+        <p></p>
       </div>
       <div class="missing-ingredients">
         <ul class="missing-list">
-          <li>4 Mangoes</li>
-          <li>15 Hushpuppies</li>
-          <li>2 Pieces of Milk</li>
-          <li>77 Shards of Sand</li>
-          <p class="missing-cost">Approximate Cost of: $10.50</p>
+          <li>${missingItems}</li>
+          <p class="total-cost">Approximate total cost to cook meal: ${Math.floor(recipe.getTotalCost(ingredientsData))} ¢</p>
         </ul>
       </div>
     </div>
-    <div class="cooking-instructions hidden">
+    <div class="cooking-instructions">
+    <p class="cooking-details">${recipe.instructions.map(step => {return step.instruction})}</p>
     </div>`
   }
 }
@@ -91,14 +91,13 @@ function showMeals() {
     mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
     return new Recipe(recipe)
   })
-  console.log('original Data', recipeData);
-  console.log('new dats', recipes);
 }
 
 function displayHomePage() {
   homePage.classList.remove('hidden');
   favoritesPage.classList.add('hidden');
-  mealPage.classList.add('hidden')
+  mealPage.classList.add('hidden');
+  mealPage.innerHTML = " "
 }
 
 function displayFavoritesPage() {
@@ -108,7 +107,6 @@ function displayFavoritesPage() {
 }
 
 function displayMealPage(target) {
-  console.log(target);
   let recipe = recipes.find(recipe => recipe.id == target.id)
   mealPage.classList.remove('hidden')
   mealPage.insertAdjacentHTML('afterbegin', domSelectedMeal.loadSelectedRecipe(recipe))
