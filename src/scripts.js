@@ -1,9 +1,9 @@
 const page = document.querySelector('body');
 const homePage = document.querySelector('.home-page');
-const favoritesPage = document.querySelector('.favorites-page');
+const favoritesPage = document.querySelector('#favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
-let recipes
+let recipes;
 
 const filterDropDown = document.querySelector('.type-selection')
 
@@ -18,9 +18,9 @@ let domMeals = {
         <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
       </div>
       <div class="card-icon-container">
-        <img id="${recipe.name}" class="icon active hidden"src="https://img.icons8.com/color/96/000000/hearts.png"/>
-        <img id="${recipe.name}" class="icon inactive" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
-        <img id="${recipe.name}" class="icon cook-ready" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
+        <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="icon cook-ready ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
       </div>
     </div>`
   }
@@ -40,8 +40,8 @@ function clickHandler(event) {
   let target = event.target;
   event.target.classList.contains('home-btn') ? displayHomePage() : null;
   event.target.classList.contains('favorites-btn') ? displayFavoritesPage() : null;
-  event.target.classList.contains('food-img') ? displayMealPage(target) : null;
-  // event.target.classList.contains()
+  event.target.classList.contains('food-img') ? displayMealPage() : null;
+  event.target.classList.contains('favorite-icon') ? addMealToFavorites(target) : null;
 
   // if event target is favorites heart - call user method addtofaves
   // if card is already in add to faves - then PUSH OUT of faves and change heart
@@ -57,10 +57,26 @@ function loadUser() {
   return user
 }
 
+function loadFavorites(recipe) {
+  return `
+  <div id="${recipe.id}" class='meal-card'>
+    <div id="${recipe.id}" class='card-title-container'>
+      <p class='card-title'>${recipe.name}</p>
+    </div>
+    <div id="${recipe.id}"class="food-img-container">
+      <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
+    </div>
+    <div class="card-icon-container">
+      <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
+      <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+      <img id="${recipe.id}" class="icon cook-ready ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
+    </div>
+  </div>`
+}
+
 let domSelectedMeal = {
   loadSelectedRecipe(recipe) {
     let missingItems = user.pantry.requiredForMeal(recipe);
-
     return `
     <div class='meal-details-picked'>
       <div class='card-title-container-picked'>
@@ -104,6 +120,9 @@ function displayHomePage() {
 }
 
 function displayFavoritesPage() {
+  favorites = this.user.favorites.map(recipe => {
+    favoritesPage.insertAdjacentHTML('afterbegin', loadFavorites(recipe));
+  })
   favoritesPage.classList.remove('hidden');
   homePage.classList.add('hidden');
   mealPage.classList.add('hidden')
@@ -116,6 +135,12 @@ function displayMealPage(target) {
   homePage.classList.add('hidden');
   favoritesPage.classList.add('hidden');
 }
+
+function addMealToFavorites(target) {
+  let targetRecipe = recipes.find(recipe => {
+    return recipe.id == target.id
+  });
+  user.addToFavorites(targetRecipe)
 
 function filterByType() {
   let userSelection = event.target.value;
@@ -134,4 +159,8 @@ function filterByType() {
     mealContainer.innerHTML = " ";
     showMeals(filteredRecipes)
   }
+}
+
+function searchBar() {
+
 }
