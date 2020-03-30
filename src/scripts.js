@@ -3,7 +3,7 @@ const homePage = document.querySelector('.home-page');
 const favoritesPage = document.querySelector('.favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
-
+let recipes
 
 let domMeals = {
   displayMeals(recipe) {
@@ -34,9 +34,10 @@ function load() {
 }
 
 function clickHandler(event) {
+  let target = event.target;
   event.target.classList.contains('home-btn') ? displayHomePage() : null;
   event.target.classList.contains('favorites-btn') ? displayFavoritesPage() : null;
-  event.target.classList.contains('food-img') ? displayMealPage() : null;
+  event.target.classList.contains('food-img') ? displayMealPage(target) : null;
   // event.target.classList.contains()
 
   // if event target is favorites heart - call user method addtofaves
@@ -48,21 +49,55 @@ function clickHandler(event) {
 
 function loadUser() {
   let userSelected = usersData[Math.floor(Math.random() * usersData.length)]
-  user = new User(userSelected);
-  console.log('three', user);
+  user = new User(userSelected, Pantry);
+  user.pantry.getIngredientDetails(ingredientsData)
   return user
 }
 
+let domSelectedMeal = {
+  loadSelectedRecipe(recipe) {
+    let missingItems = user.pantry.requiredForMeal(recipe);
+    console.log(missingItems);
+
+    return `
+    <div class='meal-details-picked'>
+      <div class='card-title-container-picked'>
+        <p>${recipe.name}</p>
+      </div>
+      <div class="food-img-container-picked">
+        <img class="food-img-picked" rel="food-img" src="${recipe.image}">
+      </div>
+    </div>
+    <div class="required-to-cook">
+      <div class="required-title-box">
+        <p>Your pantry is missing the following ingredient(s) to cook this meal:</p>
+        <p></p>
+      </div>
+      <div class="missing-ingredients">
+        <ul class="missing-list">
+          <li>${missingItems}</li>
+          <p class="total-cost">Approximate total cost to cook meal: ${Math.floor(recipe.getTotalCost(ingredientsData))} ¢</p>
+        </ul>
+      </div>
+    </div>
+    <div class="cooking-instructions">
+    <p class="cooking-details">${recipe.instructions.map(step => {return step.instruction})}</p>
+    </div>`
+  }
+}
+
 function showMeals() {
-  recipeData.forEach(recipe => {
-   mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
+  recipes = recipeData.map(recipe => {
+    mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
+    return new Recipe(recipe)
   })
 }
 
 function displayHomePage() {
   homePage.classList.remove('hidden');
   favoritesPage.classList.add('hidden');
-  mealPage.classList.add('hidden')
+  mealPage.classList.add('hidden');
+  mealPage.innerHTML = " "
 }
 
 function displayFavoritesPage() {
@@ -71,8 +106,10 @@ function displayFavoritesPage() {
   mealPage.classList.add('hidden')
 }
 
-function displayMealPage() {
+function displayMealPage(target) {
+  let recipe = recipes.find(recipe => recipe.id == target.id)
   mealPage.classList.remove('hidden')
+  mealPage.insertAdjacentHTML('afterbegin', domSelectedMeal.loadSelectedRecipe(recipe))
   homePage.classList.add('hidden');
   favoritesPage.classList.add('hidden');
 }
@@ -80,4 +117,3 @@ function displayMealPage() {
 function filterByType() {
    // add a switch function to handle the possibilities of the filter to have multiple values responde the same (ex. main course, dinner is the same shit. same as antipasto and antipasti for fucks sake)
 }
-
