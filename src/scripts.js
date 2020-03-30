@@ -3,13 +3,12 @@ const homePage = document.querySelector('.home-page');
 const favoritesPage = document.querySelector('#favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
+const filterDropDown = document.querySelector('.type-selection')
 let recipes;
 
-const filterDropDown = document.querySelector('.type-selection')
 
-let domMeals = {
-  displayMeals(recipe) {
-    return `
+function displayMeals(recipe) {
+  return `
     <div id="${recipe.id}" class='meal-card'>
       <div id="${recipe.id}" class='card-title-container'>
         <p class='card-title'>${recipe.name}</p>
@@ -24,6 +23,10 @@ let domMeals = {
       </div>
     </div>`
   }
+
+function toggleCanCook(recipe) {
+  user.pantry.requiredForMeal(recipe);
+  console.log(user.pantry.requiredForMeal(recipe));
 }
 
 filterDropDown.addEventListener('change', filterByType)
@@ -106,7 +109,7 @@ let domSelectedMeal = {
 
 function showMeals(mealData) {
   recipes = mealData.map(recipe => {
-    mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
+    mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))
     return new Recipe(recipe)
   })
 }
