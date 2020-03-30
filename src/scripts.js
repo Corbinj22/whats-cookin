@@ -40,7 +40,7 @@ function clickHandler(event) {
   let target = event.target;
   event.target.classList.contains('home-btn') ? displayHomePage() : null;
   event.target.classList.contains('favorites-btn') ? displayFavoritesPage() : null;
-  event.target.classList.contains('food-img') ? displayMealPage() : null;
+  event.target.classList.contains('food-img') ? displayMealPage(event) : null;
   event.target.classList.contains('favorite-icon') ? addMealToFavorites(target) : null;
 
   // if event target is favorites heart - call user method addtofaves
@@ -128,8 +128,8 @@ function displayFavoritesPage() {
   mealPage.classList.add('hidden')
 }
 
-function displayMealPage(target) {
-  let recipe = recipes.find(recipe => recipe.id == target.id)
+function displayMealPage(event) {
+  let recipe = recipes.find(recipe => recipe.id == event.target.id)
   mealPage.classList.remove('hidden')
   mealPage.insertAdjacentHTML('afterbegin', domSelectedMeal.loadSelectedRecipe(recipe))
   homePage.classList.add('hidden');
@@ -141,6 +141,7 @@ function addMealToFavorites(target) {
     return recipe.id == target.id
   });
   user.addToFavorites(targetRecipe)
+}
 
 function filterByType() {
   let userSelection = event.target.value;
@@ -161,6 +162,6 @@ function filterByType() {
   }
 }
 
-function searchBar() {
-
-}
+// function searchBar() {
+//
+// }
