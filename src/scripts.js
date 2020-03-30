@@ -1,6 +1,6 @@
 const page = document.querySelector('body');
 const homePage = document.querySelector('.home-page');
-const favoritesPage = document.querySelector('.favorites-page');
+const favoritesPage = document.querySelector('#favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
 let recipes;
@@ -50,14 +50,31 @@ function clickHandler(event) {
 function loadUser() {
   let userSelected = usersData[Math.floor(Math.random() * usersData.length)]
   user = new User(userSelected);
+  user.pantry.getIngredientDetails(ingredientsData);
   console.log('userLoad', user);
   return user
+}
+
+function loadFavorites(recipe) {
+  return `
+  <div id="${recipe.id}" class='meal-card'>
+    <div id="${recipe.id}" class='card-title-container'>
+      <p class='card-title'>${recipe.name}</p>
+    </div>
+    <div id="${recipe.id}"class="food-img-container">
+      <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
+    </div>
+    <div class="card-icon-container">
+      <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
+      <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+      <img id="${recipe.id}" class="icon cook-ready ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
+    </div>
+  </div>`
 }
 
 let domSelectedMeal = {
   loadSelectedRecipe(recipe) {
     console.log('whole recipie', recipe);
-
     return `
     <div class='meal-details-picked'>
       <div class='card-title-container-picked'>
@@ -90,28 +107,27 @@ function showMeals() {
   recipes = recipeData.map(recipe => {
     mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
     return new Recipe(recipe)
-  // recipeData.forEach(recipe => {
-  //   mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
-  })
-  console.log('original Data', recipeData);
-  console.log('new dats', recipes);
+  })  
 }
 
 function displayHomePage() {
   homePage.classList.remove('hidden');
   favoritesPage.classList.add('hidden');
   mealPage.classList.add('hidden')
+  favoritesPage.innerHTML = ' ';
 }
 
 function displayFavoritesPage() {
+  favorites = this.user.favorites.map(recipe => {
+    favoritesPage.insertAdjacentHTML('afterbegin', loadFavorites(recipe));
+  })
   favoritesPage.classList.remove('hidden');
   homePage.classList.add('hidden');
   mealPage.classList.add('hidden')
 }
 
-function displayMealPage(target) {
-  console.log(target);
-  let recipe = recipes.find(recipe => recipe.id == target.id)
+function displayMealPage(event) {
+  let recipe = recipes.find(recipe => recipe.id == event.target.id)
   mealPage.classList.remove('hidden')
   mealPage.insertAdjacentHTML('afterbegin', domSelectedMeal.loadSelectedRecipe(recipe))
   homePage.classList.add('hidden');
@@ -119,13 +135,12 @@ function displayMealPage(target) {
 }
 
 function addMealToFavorites(target) {
-  console.log('thingclicked', target)
-  console.log('alldata', recipeData)
-  const targetRecipe = recipeData.find(recipe => target.id === recipe[i].id)
-  console.log(targetRecipe)
+  let targetRecipe = recipes.find(recipe => {
+    return recipe.id == target.id
+  });
   user.addToFavorites(targetRecipe)
 }
 
-function filterByType() {
-   // add a switch function to handle the possibilities of the filter to have multiple values responde the same (ex. main course, dinner is the same shit. same as antipasto and antipasti for fucks sake)
+function searchBar() {
+
 }
