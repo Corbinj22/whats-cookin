@@ -5,6 +5,8 @@ const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
 let recipes
 
+const filterDropDown = document.querySelector('.type-selection')
+
 let domMeals = {
   displayMeals(recipe) {
     return `
@@ -24,12 +26,13 @@ let domMeals = {
   }
 }
 
+filterDropDown.addEventListener('change', filterByType)
 page.addEventListener('click', clickHandler)
 
 window.onload = load();
 
 function load() {
-  showMeals();
+  showMeals(recipeData);
   loadUser()
 }
 
@@ -57,7 +60,6 @@ function loadUser() {
 let domSelectedMeal = {
   loadSelectedRecipe(recipe) {
     let missingItems = user.pantry.requiredForMeal(recipe);
-    console.log(missingItems);
 
     return `
     <div class='meal-details-picked'>
@@ -86,14 +88,15 @@ let domSelectedMeal = {
   }
 }
 
-function showMeals() {
-  recipes = recipeData.map(recipe => {
+function showMeals(mealData) {
+  recipes = mealData.map(recipe => {
     mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
     return new Recipe(recipe)
   })
 }
 
 function displayHomePage() {
+  showMeals(recipeData)
   homePage.classList.remove('hidden');
   favoritesPage.classList.add('hidden');
   mealPage.classList.add('hidden');
@@ -115,5 +118,20 @@ function displayMealPage(target) {
 }
 
 function filterByType() {
-   // add a switch function to handle the possibilities of the filter to have multiple values responde the same (ex. main course, dinner is the same shit. same as antipasto and antipasti for fucks sake)
+  let userSelection = event.target.value;
+  let filteredRecipes = recipeData.reduce((acc, recipe) => {
+    recipe.tags.forEach(tag => {
+     if (tag === userSelection && !acc.includes(userSelection)) {
+       acc.push(recipe)
+      }
+    })
+    return acc;
+  }, [])
+
+  if (userSelection === "home") {
+    displayHomePage()
+  } else {
+    mealContainer.innerHTML = " ";
+    showMeals(filteredRecipes)
+  }
 }
