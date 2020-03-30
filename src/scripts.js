@@ -3,11 +3,9 @@ const homePage = document.querySelector('.home-page');
 const favoritesPage = document.querySelector('.favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
-<<<<<<< Updated upstream
 let recipes
-=======
+
 const filterDropDown = document.querySelector('.type-selection')
->>>>>>> Stashed changes
 
 let domMeals = {
   displayMeals(recipe) {
@@ -28,14 +26,13 @@ let domMeals = {
   }
 }
 
-
 filterDropDown.addEventListener('change', filterByType)
 page.addEventListener('click', clickHandler)
 
 window.onload = load();
 
 function load() {
-  showMeals();
+  showMeals(recipeData);
   loadUser()
 }
 
@@ -63,7 +60,6 @@ function loadUser() {
 let domSelectedMeal = {
   loadSelectedRecipe(recipe) {
     let missingItems = user.pantry.requiredForMeal(recipe);
-    console.log(missingItems);
 
     return `
     <div class='meal-details-picked'>
@@ -92,14 +88,15 @@ let domSelectedMeal = {
   }
 }
 
-function showMeals() {
-  recipes = recipeData.map(recipe => {
+function showMeals(mealData) {
+  recipes = mealData.map(recipe => {
     mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
     return new Recipe(recipe)
   })
 }
 
 function displayHomePage() {
+  showMeals(recipeData)
   homePage.classList.remove('hidden');
   favoritesPage.classList.add('hidden');
   mealPage.classList.add('hidden');
@@ -122,6 +119,19 @@ function displayMealPage(target) {
 
 function filterByType() {
   let userSelection = event.target.value;
-  console.log(userSelection);
+  let filteredRecipes = recipeData.reduce((acc, recipe) => {
+    recipe.tags.forEach(tag => {
+     if (tag === userSelection && !acc.includes(userSelection)) {
+       acc.push(recipe)
+      }
+    })
+    return acc;
+  }, [])
 
+  if (userSelection === "home") {
+    displayHomePage()
+  } else {
+    mealContainer.innerHTML = " ";
+    showMeals(filteredRecipes)
+  }
 }
