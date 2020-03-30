@@ -8,7 +8,7 @@ class User {
   }
 
   addToFavorites(recipe) {
-    this.favorites.push(recipe)
+      this.favorites.push(recipe)
   }
 
   addMealsToCook(recipe) {
