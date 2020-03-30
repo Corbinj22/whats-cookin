@@ -3,7 +3,11 @@ const homePage = document.querySelector('.home-page');
 const favoritesPage = document.querySelector('.favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
+<<<<<<< Updated upstream
 let recipes
+=======
+const filterDropDown = document.querySelector('.type-selection')
+>>>>>>> Stashed changes
 
 let domMeals = {
   displayMeals(recipe) {
@@ -24,6 +28,8 @@ let domMeals = {
   }
 }
 
+
+filterDropDown.addEventListener('change', filterByType)
 page.addEventListener('click', clickHandler)
 
 window.onload = load();
@@ -115,5 +121,7 @@ function displayMealPage(target) {
 }
 
 function filterByType() {
-   // add a switch function to handle the possibilities of the filter to have multiple values responde the same (ex. main course, dinner is the same shit. same as antipasto and antipasti for fucks sake)
+  let userSelection = event.target.value;
+  console.log(userSelection);
+
 }
