@@ -3,9 +3,9 @@ const homePage = document.querySelector('.home-page');
 const favoritesPage = document.querySelector('#favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
+const filterDropDown = document.querySelector('.type-selection')
 let recipes;
 
-const filterDropDown = document.querySelector('.type-selection')
 
 let domMeals = {
   displayMeals(recipe) {
@@ -18,8 +18,8 @@ let domMeals = {
         <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
       </div>
       <div class="card-icon-container">
-        <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
-        <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="favorite-icon-active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="favorite-icon-inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
         <img id="${recipe.id}" class="icon cook-ready ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
       </div>
     </div>`
@@ -41,7 +41,7 @@ function clickHandler(event) {
   event.target.classList.contains('home-btn') ? displayHomePage() : null;
   event.target.classList.contains('favorites-btn') ? displayFavoritesPage() : null;
   event.target.classList.contains('food-img') ? displayMealPage(event) : null;
-  event.target.classList.contains('favorite-icon') ? addMealToFavorites(target) : null;
+  event.target.classList.contains('favorite-icon-inactive') ? addMealToFavorites(target) : null;
 
   // if event target is favorites heart - call user method addtofaves
   // if card is already in add to faves - then PUSH OUT of faves and change heart
@@ -99,7 +99,7 @@ let domSelectedMeal = {
       </div>
     </div>
     <div class="cooking-instructions">
-    <p class="cooking-details">${recipe.instructions.map(step => {return step.instruction})}</p>
+    <p class="cooking-details">${recipe.instructions.map(step => step.instruction)}</p>
     </div>`
   }
 }
@@ -112,15 +112,18 @@ function showMeals(mealData) {
 }
 
 function displayHomePage() {
-  showMeals(recipeData)
+  // showMeals(recipeData)
+  // ^^^ gonna take this bugger out - creates favorites bug
   homePage.classList.remove('hidden');
   favoritesPage.classList.add('hidden');
   mealPage.classList.add('hidden');
-  mealPage.innerHTML = " "
+  mealPage.innerHTML = " ";
 }
 
+// changed line 126 from this.user - to user
 function displayFavoritesPage() {
-  favorites = this.user.favorites.map(recipe => {
+  favoritesPage.innerHTML = " ";
+  favorites = user.favorites.map(recipe => {
     favoritesPage.insertAdjacentHTML('afterbegin', loadFavorites(recipe));
   })
   favoritesPage.classList.remove('hidden');
@@ -136,19 +139,29 @@ function displayMealPage(event) {
   favoritesPage.classList.add('hidden');
 }
 
+
+// maybe should put a toggle on heart showing up and that belonging to the favorites array
 function addMealToFavorites(target) {
   let targetRecipe = recipes.find(recipe => {
     return recipe.id == target.id
-  });
-  user.addToFavorites(targetRecipe)
+  })
+  favoriteValidate(targetRecipe);
+  // if(!user.favorites.includes(targetRecipe) 
+  //   user.addToFavorites(targetRecipe)
+  
+};
+
+function favoriteValidate(targetRecipe) {
+  !user.favorites.includes(targetRecipe) ? user.addToFavorites(targetRecipe) : null;
 }
+
 
 function filterByType() {
   let userSelection = event.target.value;
   let filteredRecipes = recipeData.reduce((acc, recipe) => {
     recipe.tags.forEach(tag => {
-     if (tag === userSelection && !acc.includes(userSelection)) {
-       acc.push(recipe)
+      if (tag === userSelection && !acc.includes(userSelection)) {
+        acc.push(recipe)
       }
     })
     return acc;
