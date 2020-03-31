@@ -113,7 +113,7 @@ main {
   background-color: #a76c4340;
   border: 1px groove #dc845a5c;
   border-radius: 10px;
-  height: auto;
+  height: fit-content;
   width: 26%;
   margin: 20px 20px;
   display: flex;
