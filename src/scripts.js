@@ -41,6 +41,7 @@ function clickHandler(event) {
   event.target.classList.contains('favorites-btn') ? displayFavoritesPage() : null;
   event.target.classList.contains('food-img') ? displayMealPage(event) : null;
   event.target.classList.contains('favorite-icon') ? addMealToFavorites(target) : null;
+  event.target.classList.contains('ready-to-cook') ? cookUserMeal(target) : null;
 
   // if event target is favorites heart - call user method addtofaves
   // if card is already in add to faves - then PUSH OUT of faves and change heart
@@ -174,6 +175,12 @@ if (requiredItems.length === 0) {
 return requiredItems;
 }
 
+function cookUserMeal(target) {
+  let recipieToCook = recipeData.find(recipe => recipe.id == target.id)
+  user.pantry.cookMeal(recipieToCook);
+  mealContainer.innerHTML = " ";
+  displayHomePage();
+}
 
 //
 // function searchBar() {
