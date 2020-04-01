@@ -4,11 +4,9 @@ const favoritesPage = document.querySelector('#favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
 const filterDropDown = document.querySelector('.type-selection');
-const unfavorited = document.querySelector('#favorite-icon-inactive clickedIcon');
-const favorited = document.querySelector('#favorite-icon-active clickedIcon');
+const searchBar = document.querySelector('#search-bar');
 
 let recipes;
-
 
 let domMeals = {
   displayMeals(recipe) {
@@ -29,8 +27,24 @@ let domMeals = {
   }
 }
 
+
+
 filterDropDown.addEventListener('change', filterByType)
 page.addEventListener('click', clickHandler)
+mealContainer.addEventListener('click', toggleFavorite)
+
+searchBar.addEventListener('keyup', (e) => {
+  // lowerCase makes the value lowercase regardless of input
+  const searchItem = e.target.value.toLowerCase();
+  // need to declar a variable that contains all titles of meals isntead of MEAL TITLES on filter
+  const filteredMeals = mealTitles.filter(meal => {
+    return meal.title.toLowerCase().includes(searchItem)
+  })
+  // this should give us all the meals that match the characters
+  return filteredMeals
+  // probably pass this results of filteredMeals in a displaySearched()
+})
+
 
 window.onload = load();
 
@@ -45,15 +59,8 @@ function clickHandler(event) {
   event.target.classList.contains('favorites-btn') ? displayFavoritesPage() : null;
   event.target.classList.contains('food-img') ? displayMealPage(event) : null;
   event.target.classList.contains('favorite-icon-inactive') ? addMealToFavorites(target) : null;
-
   event.target.classList.contains('favorite-icon-active') ? removeMealFromFavorites(target) : null;
-
-  // if event target is favorites heart - call user method addtofaves
-  // if card is already in add to faves - then PUSH OUT of faves and change heart
-  // if event target is add BTN - call user method addMealToCook
-  // meal card click handler can have event.target.closest('.meal-card')
-  // depending on the meal card "closest" selected, it should populate on meal page
- }
+}
 
 function loadUser() {
   let userSelected = usersData[Math.floor(Math.random() * usersData.length)]
@@ -72,8 +79,7 @@ function loadFavorites(recipe) {
       <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
     </div>
     <div class="card-icon-container">
-      <img id="${recipe.id}" class="favorite-icon-active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
-      <img id="${recipe.id}" class="favorite-icon-inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+      <img id="${recipe.id}" class="favorite-icon"src="https://img.icons8.com/windows/96/000000/hearts.png"/>
       <img id="${recipe.id}" class="icon cook-ready ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
     </div>
   </div>`
@@ -149,93 +155,37 @@ function removeMealFromFavorites(target) {
   let targetRecipe = recipes.find(recipe => {
     return recipe.id == target.id
   })
-  console.log('recipe picked', targetRecipe)
   let targetValidate = user.favorites.find(meal => {
     if (meal.id === targetRecipe.id) {
-      console.log('which meal', meal.id)
       return false
     }
-    console.log('Validate', targetValidate)
-    
     if (!targetValidate) {  
-      
       let repeated = user.favorites.indexOf('targetValidate');
       user.favorites.splice(repeated, 1);
     }
   })
-  // do i need to favoriteValidate here?
-  // toggle hide/show 
 }
 
-
-// maybe should put a toggle on heart showing up and that belonging to the favorites array
 function addMealToFavorites(target) {
   let targetRecipe = recipes.find(recipe => {
     return recipe.id == target.id
   })
   favoriteValidate(targetRecipe);
-  toggleFavorite(targetRecipe);
-  // if(!user.favorites.includes(targetRecipe) 
-  //   user.addToFavorites(targetRecipe)
-  
 };
 
 function favoriteValidate(targetRecipe) {
   !user.favorites.includes(targetRecipe) ? user.addToFavorites(targetRecipe) : null;
 }
 
-function toggleFavorite(targetRecipe) {
-  // run a find over the cards to find the one that contains/includes the event.target.id
-  // if it does not contain the active heart , then hide/show toggle
-  // that return get the affected 
-  let clickedIcon = event.target.id
-  let inactiveIcon = document.getElementsByClassName('favorite-icon-inactive')
-  // let formatted = inactiveIcon.reduce((acc, img) => {
-    
-  //   return acc
-  // }, '')
-  // let cardSelected = inactiveIcon.find(card => {
-  //   return  card.id === clickedIcon;
-  // }) 
-  
-
-
-
-  // grab icon 
-  // console.log('clicked thing', targetRecipe)
-  // let clickedIcon = event.target.id;
-  // console.log('three', clickedIcon)
-  // // let activeIcon = document.getElementsByClassName('favorite-icon-active')
-  // console.log('one', unfavorited);
-  // console.log('two', favorited);
-
-  // if (targetRecipe.id === clickedIcon) {
-  //   unfavorited.classList.add('hidden');
-  //   favorited.classList.remove('hidden');
-  // }
-
-  // let toggle = activeIcon.indexOf(clickedIcon)
-  // console.log('toggle', toggle)
-  // if (toggle > 0) {
-  //   inactiveIcon.classList.add('hidden')
-  //   activeIcon.classList.remove('hidden')
-  // }
-  // console.log("toggle", toggle)
-  // if (toggle === )
-
-
-
-  // if (clickedIcon === inactiveIcon.id) {
-  //   console.log(event.target);
-  //   inactiveIcon.classList.add('hidden')
-  //   activeIcon.classList.remove('hidden')
-  // } else {
-  //   activeIcon.classList.add('hidden')
-  //   inactiveIcon.classList.remove('hidden')
-  // }
-  // on click add hide to icon and toggle to other icon
+function toggleFavorite(event) {
+  if(event.target.classList.contains('favorite-active')) {
+    event.target.classList.remove('favorite-active')
+    event.target.src = "https://img.icons8.com/color/96/000000/hearts.png";
+  } else {
+    event.target.src = "https://img.icons8.com/windows/96/000000/hearts.png"
+    event.target.classList.add('favorite-active')
+  }
 }
-
 
 function filterByType() {
   let userSelection = event.target.value;
@@ -255,7 +205,3 @@ function filterByType() {
     showMeals(filteredRecipes)
   }
 }
-
-// function searchBar() {
-//
-// }
