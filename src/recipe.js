@@ -24,7 +24,6 @@ class Recipe {
     }, 0)
     return totalCost;
   };
-
 };
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
