@@ -4,25 +4,8 @@ const favoritesPage = document.querySelector('#favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
 const filterDropDown = document.querySelector('.type-selection')
-let recipes;
 
-// function displayMeals(recipe) {
-//   toggleCanCook(recipe);
-//   return `
-//     <div id="${recipe.id}" class='meal-card'>
-//       <div id="${recipe.id}" class='card-title-container'>
-//         <p class='card-title'>${recipe.name}</p>
-//       </div>
-//       <div id="${recipe.id}"class="food-img-container">
-//         <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
-//       </div>
-//       <div class="card-icon-container">
-//         <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
-//         <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
-//         <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
-//       </div>
-//     </div>`
-//   }
+let recipes;
 
 filterDropDown.addEventListener('change', filterByType)
 page.addEventListener('click', clickHandler)
@@ -148,7 +131,8 @@ function filterByType() {
   }, [])
 
   if (userSelection === "home") {
-    //?????
+    mealContainer.innerHTML = " ";
+    showMeals(recipeData)
   } else {
     mealContainer.innerHTML = " ";
     showMeals(filteredRecipes)
@@ -167,15 +151,10 @@ return requiredItems;
 }
 
 function cookUserMeal(target) {
-  let recipieToCook = recipeData.find(recipe => recipe.id == target.id)
-  user.pantry.cookMeal(recipieToCook);
+  let recipeToCook = recipeData.find(recipe => recipe.id == target.id)
+  user.pantry.cookMeal(recipeToCook);
   mealContainer.innerHTML = " ";
   recipes.forEach(recipe => {
     mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))
   })
 }
-
-//
-// function searchBar() {
-//
-// }
