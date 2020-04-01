@@ -4,26 +4,8 @@ const favoritesPage = document.querySelector('#favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
 const filterDropDown = document.querySelector('.type-selection')
+
 let recipes;
-
-
-function displayMeals(recipe) {
-  toggleCanCook(recipe);
-  return `
-    <div id="${recipe.id}" class='meal-card'>
-      <div id="${recipe.id}" class='card-title-container'>
-        <p class='card-title'>${recipe.name}</p>
-      </div>
-      <div id="${recipe.id}"class="food-img-container">
-        <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
-      </div>
-      <div class="card-icon-container">
-        <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
-        <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
-        <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
-      </div>
-    </div>`
-  }
 
 filterDropDown.addEventListener('change', filterByType)
 page.addEventListener('click', clickHandler)
@@ -42,12 +24,6 @@ function clickHandler(event) {
   event.target.classList.contains('food-img') ? displayMealPage(event) : null;
   event.target.classList.contains('favorite-icon') ? addMealToFavorites(target) : null;
   event.target.classList.contains('ready-to-cook') ? cookUserMeal(target) : null;
-
-  // if event target is favorites heart - call user method addtofaves
-  // if card is already in add to faves - then PUSH OUT of faves and change heart
-  // if event target is add BTN - call user method addMealToCook
-  // meal card click handler can have event.target.closest('.meal-card')
-  // depending on the meal card "closest" selected, it should populate on meal page
  }
 
 function loadUser() {
@@ -55,25 +31,6 @@ function loadUser() {
   user = new User(userSelected, Pantry);
   user.pantry.getIngredientDetails(ingredientsData)
   return user
-}
-
-function loadFavorites(recipe) {
-  toggleCanCook(recipe);
-  console.log(toggleCanCook(recipe));
-  return `
-  <div id="${recipe.id}" class='meal-card'>
-    <div id="${recipe.id}" class='card-title-container'>
-      <p class='card-title'>${recipe.name}</p>
-    </div>
-    <div id="${recipe.id}"class="food-img-container">
-      <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
-    </div>
-    <div class="card-icon-container">
-      <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
-      <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
-      <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
-    </div>
-  </div>`
 }
 
 let domSelectedMeal = {
@@ -106,6 +63,24 @@ let domSelectedMeal = {
   }
 }
 
+function displayMeals(recipe) {
+  toggleCanCook(recipe);
+  return `
+    <div id="${recipe.id}" class='meal-card'>
+      <div id="${recipe.id}" class='card-title-container'>
+        <p class='card-title'>${recipe.name}</p>
+      </div>
+      <div id="${recipe.id}"class="food-img-container">
+        <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
+      </div>
+      <div class="card-icon-container">
+        <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
+      </div>
+    </div>`
+  }
+
 function showMeals(mealData) {
   recipes = mealData.map(recipe => {
     mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))
@@ -114,7 +89,6 @@ function showMeals(mealData) {
 }
 
 function displayHomePage() {
-  showMeals(recipeData)
   homePage.classList.remove('hidden');
   favoritesPage.classList.add('hidden');
   mealPage.classList.add('hidden');
@@ -123,7 +97,7 @@ function displayHomePage() {
 
 function displayFavoritesPage() {
   favorites = this.user.favorites.map(recipe => {
-    favoritesPage.insertAdjacentHTML('afterbegin', loadFavorites(recipe));
+    favoritesPage.insertAdjacentHTML('afterbegin', displayMeals(recipe));
   })
   favoritesPage.classList.remove('hidden');
   homePage.classList.add('hidden');
@@ -157,7 +131,8 @@ function filterByType() {
   }, [])
 
   if (userSelection === "home") {
-    displayHomePage()
+    mealContainer.innerHTML = " ";
+    showMeals(recipeData)
   } else {
     mealContainer.innerHTML = " ";
     showMeals(filteredRecipes)
@@ -170,19 +145,16 @@ var requiredItems = user.pantry.requiredForMeal(recipe);
 if (requiredItems.length === 0) {
   requiredItems = "ready-to-cook"
 } else {
-  requiredItems =  "cook-ready";
+  requiredItems = "cook-ready";
 }
 return requiredItems;
 }
 
 function cookUserMeal(target) {
-  let recipieToCook = recipeData.find(recipe => recipe.id == target.id)
-  user.pantry.cookMeal(recipieToCook);
+  let recipeToCook = recipeData.find(recipe => recipe.id == target.id)
+  user.pantry.cookMeal(recipeToCook);
   mealContainer.innerHTML = " ";
-  displayHomePage();
+  recipes.forEach(recipe => {
+    mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))
+  })
 }
-
-//
-// function searchBar() {
-//
-// }
