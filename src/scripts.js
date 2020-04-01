@@ -3,13 +3,13 @@ const homePage = document.querySelector('.home-page');
 const favoritesPage = document.querySelector('#favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
+const filterDropDown = document.querySelector('.type-selection')
 let recipes;
 
-const filterDropDown = document.querySelector('.type-selection')
 
-let domMeals = {
-  displayMeals(recipe) {
-    return `
+function displayMeals(recipe) {
+  toggleCanCook(recipe);
+  return `
     <div id="${recipe.id}" class='meal-card'>
       <div id="${recipe.id}" class='card-title-container'>
         <p class='card-title'>${recipe.name}</p>
@@ -20,11 +20,10 @@ let domMeals = {
       <div class="card-icon-container">
         <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
         <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
-        <img id="${recipe.id}" class="icon cook-ready ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
+        <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
       </div>
     </div>`
   }
-}
 
 filterDropDown.addEventListener('change', filterByType)
 page.addEventListener('click', clickHandler)
@@ -32,8 +31,8 @@ page.addEventListener('click', clickHandler)
 window.onload = load();
 
 function load() {
-  showMeals(recipeData);
   loadUser()
+  showMeals(recipeData);
 }
 
 function clickHandler(event) {
@@ -58,6 +57,8 @@ function loadUser() {
 }
 
 function loadFavorites(recipe) {
+  toggleCanCook(recipe);
+  console.log(toggleCanCook(recipe));
   return `
   <div id="${recipe.id}" class='meal-card'>
     <div id="${recipe.id}" class='card-title-container'>
@@ -69,7 +70,7 @@ function loadFavorites(recipe) {
     <div class="card-icon-container">
       <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
       <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
-      <img id="${recipe.id}" class="icon cook-ready ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
+      <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
     </div>
   </div>`
 }
@@ -106,7 +107,7 @@ let domSelectedMeal = {
 
 function showMeals(mealData) {
   recipes = mealData.map(recipe => {
-    mealContainer.insertAdjacentHTML('afterbegin', domMeals.displayMeals(recipe))
+    mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))
     return new Recipe(recipe)
   })
 }
@@ -162,6 +163,19 @@ function filterByType() {
   }
 }
 
+function toggleCanCook(recipe) {
+var requiredItems = user.pantry.requiredForMeal(recipe);
+
+if (requiredItems.length === 0) {
+  requiredItems = "ready-to-cook"
+} else {
+  requiredItems =  "cook-ready";
+}
+return requiredItems;
+}
+
+
+//
 // function searchBar() {
 //
 // }
