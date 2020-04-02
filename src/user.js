@@ -1,4 +1,3 @@
-
 class User {
   constructor(obj, Pantry) {
     this.name = obj.name;
