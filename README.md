@@ -14,9 +14,13 @@ For this application we utilized the mocha and chai libraries.
 
 #### Application Images
 A User can view a selection of meals. 
-![](cookie%20meal%20selected.png)
+![](images/main%20page.png)
 
 A user can click a meal to see its cost, cooking instructions and will be informed if their pantry is missing any items to cook the meal.
+![](images/cookie%20meal%20selected.png)
 
+A user is able to filter meals by type.
+![](images/filter%20meals.png)
 
 A user can click a meal card heart icon and by clicking the "Favorites" tab, will be able to see any saved favorites.
+![](images/favorited%20page.png)
