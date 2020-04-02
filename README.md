@@ -6,7 +6,7 @@ This application allows a user to track the meals they would like to cook and in
 
 ### See the Application 
 
-You can view the application here: https://carflor.github.io/whats-cookin/
+You can view the application here: https://carflor.github.io/whats-cookin/src/index.html
 
 ### Testing 
 
