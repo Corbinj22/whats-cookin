@@ -6,7 +6,7 @@ To build the application we used Javascript.
 
 ### See the Application 
 
-You can view the application [here](https://carflor.github.io/whats-cookin/)
+You can view the application here: https://carflor.github.io/whats-cookin/
 
 ### Testing 
 
