@@ -14,7 +14,7 @@ For this application we utilized the mocha and chai libraries.
 
 #### Application Images
 A User can view a selection of meals. 
-
+![](cookie%20meal%20selected.png)
 
 A user can click a meal to see its cost, cooking instructions and will be informed if their pantry is missing any items to cook the meal.
 
