@@ -1,19 +1,23 @@
 const chai = require('chai');
 const expect = chai.expect;
+
 const Recipe = require('../src/recipe');
+const Pantry = require('../src/pantry')
 const User = require('../src/user');
-const Pantry = require('../src/pantry');
 
 let recipeDataTest = require('../tests/Recipe-test-data');
 let userTestData = require('../tests/user-test-data');
 
 describe('User', function() {
-  let recipe1, user;
+  let recipe1, pantry, user;
+
   beforeEach(function() {
     recipe1 = new Recipe(recipeDataTest[0]);
-    user = new User(userTestData);
-  })
-  
+    user = new User(userTestData, Pantry)
+    pantry = user.pantry
+    pantry.getIngredientDetails(ingredientsData);
+  });
+
   it('should be a function', function () {
     expect(User).to.be.a('function');
   })

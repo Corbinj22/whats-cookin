@@ -9,7 +9,7 @@ class Recipe {
     this.favorite = false;
   }
 
-    changeFavoriteStatus() {
+  changeFavoriteStatus() {
     if (!this.favorite) {
       this.favorite = true;
     } else {
@@ -27,13 +27,14 @@ class Recipe {
     }, [])
 
     const totalCost = formattedIngredients.reduce((acc, ingredient) => {
-      const targetIngredient = allIngredients.find(ingredientDatum => ingredientDatum.id === ingredient.id)
+      const targetIngredient = allIngredients.find(ingredientDatum => 
+        ingredientDatum.id === ingredient.id)
       acc += (targetIngredient.estimatedCostInCents * ingredient.amount)
       return acc;
     }, 0)
-    return totalCost;
-  };
-};
+    return totalCost
+  }
+}
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
   module.exports = Recipe;

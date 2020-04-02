@@ -8,7 +8,8 @@ class Pantry {
       let ingredientData = ingredientsData.find(data => data.id === ingredient.ingredient)
       return {...ingredient, ...ingredientData}
     })
-  };
+  }
+
   requiredForMeal(recipe) {
     const missingItems = []
     recipe.ingredients.forEach((ingredientRecipe) => this.pantry.forEach((ingredientPantry) =>
@@ -33,8 +34,7 @@ class Pantry {
       }
       return acc;
     }, [])
-  };
-
+  }
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {

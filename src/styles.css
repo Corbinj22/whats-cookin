@@ -15,6 +15,7 @@ body, html {
   pointer-events: none;
 }
 
+/* nav bar items */
 nav {
   width: 100%;
   height: 10%;
@@ -63,6 +64,8 @@ h1:hover, .favorites-btn:hover {
 
 }
 
+/* main page */
+
 main {
   height: 620px;
 }
@@ -95,6 +98,8 @@ main {
   pointer-events: auto;
 }
 
+/* meals display */
+
 .meal-page {
   width: 70%;
   height: 100%;
@@ -121,9 +126,29 @@ main {
   pointer-events: auto;
 }
 
+.card-title-container {
+  padding: 0px 5px;
+  display: flex;
+  height: auto;
+}
+
+.card-title {
+  width: 100%;
+  height: 15%;
+  padding: 2px 2px;
+}
+
+.food-img {
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+/* selected meal card  */
+
 .meal-card-picked {
-  background-color: #a76c4340;
-  border: 1px groove #dc845a5c;
+  background-color: rgba(167, 108, 67, 0.15);;
+  border: 1px groove rgba(167, 108, 67, 0.15);;
   border-radius: 10px;
   height: 90%;
   width: 40%;
@@ -133,24 +158,12 @@ main {
   pointer-events: none;
 }
 
-.card-title-container {
-  padding: 0px 5px;
-  display: flex;
-  height: auto;
-}
-
 .card-title-container-picked {
   height: 15%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 21px;
-}
-
-.card-title {
-  width: 100%;
-  height: 15%;
-  padding: 2px 2px;
 }
 
 .card-title-picked {
@@ -165,21 +178,18 @@ main {
   pointer-events: auto;
 }
 
-.food-img-container:hover .food-img {
-  opacity: 0.3;
-}
-
-.food-img {
-  width: 100%;
-  height: 100%;
-  pointer-events: auto;
-}
-
 .food-img-picked {
   width: 100%;
   height: 100%;
   pointer-events: auto;
+}
 
+.meal-details-picked {
+  border: 1px groove rgba(167, 108, 67, 0.15);;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .card-icon-container {
@@ -190,41 +200,16 @@ main {
   padding: 9px;
 }
 
-/* .icon {
-  width: 17%;
-  pointer-events: auto;
-} */
-
 .icon, .favorite-active {
   width: 17%;
   pointer-events: auto;
   opacity: 0.7;
 }
 
-/* .favorite-icon-active {
-  width: 17%;
-  pointer-events: auto;
-  opacity: 0.8;
-} */
-
-/* .inactive {
-  opacity: 0.7;
-} */
-
-.picked {
-  justify-content: flex-start;
-}
-
-.meal-details-picked {
-  border: 1px groove rgba(217, 124, 43, 0.3);
-  width: 45%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
+/* meal page */
 
 .required-to-cook {
-  border: 1px groove rgba(217, 124, 43, 0.3);
+  border: 1px groove rgba(167, 108, 67, 0.15);
   width: 55%;
   display: grid;
   grid-auto-rows: 102px;
@@ -250,19 +235,29 @@ main {
 
 .missing-list {
   font-size: 1em;
-  list-style-type: square
+  list-style-type: none;
 }
 
 .cooking-instructions {
-  border: 1px groove rgba(217, 124, 43, 0.3);
+  border: 1px groove rgba(167, 108, 67, 0.15);
   width: 100%;
+  padding: 10px;
 }
 
 .cooking-details {
   font-size: 20px;
 }
 
-/* hide effects + opacity remove effects */
+.missing-list {
+  list-style-type: none;
+}
+
+/* hide + active icon effects */
+
+.food-img-container:hover .food-img {
+  opacity: 0.3;
+}
+
 .cook-ready {
   opacity: .3;
 }

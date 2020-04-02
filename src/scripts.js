@@ -27,7 +27,7 @@ function clickHandler(event) {
   event.target.classList.contains('food-img') ? displayMealPage(event) : null;
   event.target.classList.contains('icon') ? addMealToFavorites(target) : null;
   event.target.classList.contains('ready-to-cook') ? cookUserMeal(target) : null;
- }
+}
 
 function loadUser() {
   let userSelected = usersData[Math.floor(Math.random() * usersData.length)]
@@ -38,7 +38,9 @@ function loadUser() {
 
 let domSelectedMeal = {
   loadSelectedRecipe(recipe) {
-    let missingItems = user.pantry.requiredForMeal(recipe);
+    let missingItems = user.pantry.requiredForMeal(recipe)
+    let totalCents = Math.floor(recipe.getTotalCost(ingredientsData))
+    let formattedCost = formatCost(totalCents);
     return `
     <div class='meal-details-picked'>
       <div class='card-title-container-picked'>
@@ -50,35 +52,19 @@ let domSelectedMeal = {
     </div>
     <div class="required-to-cook">
       <div class="required-title-box">
-        <p>Your pantry is missing the following ingredient(s) to cook this meal:</p>
+        <p>Your pantry is missing the following <br>ingredient(s) to cook this meal:</p>
         <p></p>
       </div>
       <div class="missing-ingredients">
         <ul class="missing-list">
           <li>${missingItems}</li>
-          <p class="total-cost">Approximate total cost to cook meal: ${Math.floor(recipe.getTotalCost(ingredientsData))} ¢</p>
+          <p class="total-cost">Approximate total cost to cook meal: ${formattedCost}</p>
         </ul>
       </div>
     </div>
     <div class="cooking-instructions">
     <p class="cooking-details">${recipe.instructions.map(step => step.instruction)}</p>
     </div>`
-  }
-}
-
-function favoriteClassToggle(recipe) {
-  if(recipe.favorite === false) {
-    return "favorite-inactive"
-  } else if (recipe.favorite === true) {
-      return "favorite-active"
-  }
-}
-
-function imgToggle(recipe) {
-  if(recipe.favorite === false) {
-    return "https://img.icons8.com/windows/96/000000/hearts.png"
-  } else if (recipe.favorite === true) {
-    return "https://img.icons8.com/color/96/000000/hearts.png"
   }
 }
 
@@ -97,7 +83,7 @@ function displayMeals(recipe) {
         <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
       </div>
     </div>`
-  }
+}
 
 function showMeals(mealData) {
   recipes = mealData.map(recipe => {
@@ -141,7 +127,12 @@ function addMealToFavorites(target) {
 };
 
 function favoriteValidate(targetRecipe) {
-  !user.favorites.includes(targetRecipe) ? user.addToFavorites(targetRecipe) : null;
+  !user.favorites.includes(targetRecipe) ? user.addToFavorites(targetRecipe) : removeFromFavorites(targetRecipe);
+}
+
+function removeFromFavorites(recipe) {
+  let unfavorited = user.favorites.indexOf(recipe)
+  user.favorites.splice(unfavorited, 1)
 }
 
 function toggleFavorite(event) {
@@ -156,6 +147,22 @@ function toggleFavorite(event) {
     event.target.classList.add('favorite-inactive')
     event.target.classList.remove('favorite-active')
     currentRecipe.changeFavoriteStatus()
+  }
+}
+
+function favoriteClassToggle(recipe) {
+  if (recipe.favorite === false) {
+    return "favorite-inactive"
+  } else if (recipe.favorite === true) {
+    return "favorite-active"
+  }
+}
+
+function imgToggle(recipe) {
+  if (recipe.favorite === false) {
+    return "https://img.icons8.com/windows/96/000000/hearts.png"
+  } else if (recipe.favorite === true) {
+    return "https://img.icons8.com/color/96/000000/hearts.png"
   }
 }
 
@@ -184,7 +191,7 @@ function toggleCanCook(recipe) {
   if (requiredItems.length === 0) {
     requiredItems = "ready-to-cook"
   } else {
-    requiredItems = "cook-ready";
+    requiredItems = "cook-ready"
   }
   return requiredItems;
 }
@@ -207,4 +214,8 @@ function searchMeals(event) {
   filteredMeals.map(recipe => {
     mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))
   })
-};
+}
+
+function formatCost(cost) {
+  return '$' + cost.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
