@@ -14,6 +14,6 @@ For this application we utilized the mocha and chai libraries.
 
 #### Application
 
-![https://media.giphy.com/media/ZGCuMB06KhK5B3yj6p/source.mov](whatscooking.gif)
+https://giphy.com/gifs/ZGCuMB06KhK5B3yj6p/html5
 
 
