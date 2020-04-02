@@ -12,8 +12,6 @@ class User {
     this.favorites.push(recipe)
   }
 
-  //remove from favorites recipe. find target value and index of and splice
-
   addMealsToCook(recipe) {
     this.mealsToCook.push(recipe)
   }
