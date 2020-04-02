@@ -14,7 +14,6 @@ class User {
   addMealsToCook(recipe) {
     this.mealsToCook.push(recipe)
   }
-
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {

@@ -4,11 +4,14 @@ const favoritesPage = document.querySelector('#favorites-page');
 const mealPage = document.querySelector('.meal-page');
 const mealContainer = document.getElementById('meal-container');
 const filterDropDown = document.querySelector('.type-selection')
+const searchBar = document.querySelector('#search-bar');
 
 let recipes;
 
 filterDropDown.addEventListener('change', filterByType)
 page.addEventListener('click', clickHandler)
+mealContainer.addEventListener('click', toggleFavorite)
+searchBar.addEventListener('keyup', searchMeals)
 
 window.onload = load();
 
@@ -22,7 +25,7 @@ function clickHandler(event) {
   event.target.classList.contains('home-btn') ? displayHomePage() : null;
   event.target.classList.contains('favorites-btn') ? displayFavoritesPage() : null;
   event.target.classList.contains('food-img') ? displayMealPage(event) : null;
-  event.target.classList.contains('favorite-icon') ? addMealToFavorites(target) : null;
+  event.target.classList.contains('icon') ? addMealToFavorites(target) : null;
   event.target.classList.contains('ready-to-cook') ? cookUserMeal(target) : null;
  }
 
@@ -58,7 +61,7 @@ let domSelectedMeal = {
       </div>
     </div>
     <div class="cooking-instructions">
-    <p class="cooking-details">${recipe.instructions.map(step => {return step.instruction})}</p>
+    <p class="cooking-details">${recipe.instructions.map(step => step.instruction)}</p>
     </div>`
   }
 }
@@ -74,8 +77,7 @@ function displayMeals(recipe) {
         <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
       </div>
       <div class="card-icon-container">
-        <img id="${recipe.id}" class="favorite-icon active hidden ${recipe.name}"src="https://img.icons8.com/color/96/000000/hearts.png"/>
-        <img id="${recipe.id}" class="favorite-icon inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="icon favorite-inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
         <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
       </div>
     </div>`
@@ -92,11 +94,11 @@ function displayHomePage() {
   homePage.classList.remove('hidden');
   favoritesPage.classList.add('hidden');
   mealPage.classList.add('hidden');
-  mealPage.innerHTML = " "
+  mealPage.innerHTML = " ";
 }
 
 function displayFavoritesPage() {
-  favorites = this.user.favorites.map(recipe => {
+  user.favorites.map(recipe => {
     favoritesPage.insertAdjacentHTML('afterbegin', displayMeals(recipe));
   })
   favoritesPage.classList.remove('hidden');
@@ -113,18 +115,35 @@ function displayMealPage(event) {
 }
 
 function addMealToFavorites(target) {
+  favoritesPage.innerHTML = ' ';
   let targetRecipe = recipes.find(recipe => {
     return recipe.id == target.id
-  });
-  user.addToFavorites(targetRecipe)
+  })
+  favoriteValidate(targetRecipe);
+};
+
+function favoriteValidate(targetRecipe) {
+  !user.favorites.includes(targetRecipe) ? user.addToFavorites(targetRecipe) : null;
+}
+
+function toggleFavorite(event) {
+  if (event.target.classList.contains('favorite-inactive')) {
+    event.target.classList.remove('favorite-inactive')
+    event.target.classList.add('favorite-active')
+    event.target.src = "https://img.icons8.com/color/96/000000/hearts.png";
+  } else if (event.target.classList.contains('favorite-active')) {
+    event.target.src = "https://img.icons8.com/windows/96/000000/hearts.png"
+    event.target.classList.add('favorite-inactive')
+    event.target.classList.remove('favorite-active')
+  }
 }
 
 function filterByType() {
   let userSelection = event.target.value;
   let filteredRecipes = recipeData.reduce((acc, recipe) => {
     recipe.tags.forEach(tag => {
-     if (tag === userSelection && !acc.includes(userSelection)) {
-       acc.push(recipe)
+      if (tag === userSelection && !acc.includes(userSelection)) {
+        acc.push(recipe)
       }
     })
     return acc;
@@ -140,14 +159,13 @@ function filterByType() {
 }
 
 function toggleCanCook(recipe) {
-var requiredItems = user.pantry.requiredForMeal(recipe);
-
-if (requiredItems.length === 0) {
-  requiredItems = "ready-to-cook"
-} else {
-  requiredItems = "cook-ready";
-}
-return requiredItems;
+  var requiredItems = user.pantry.requiredForMeal(recipe);
+  if (requiredItems.length === 0) {
+    requiredItems = "ready-to-cook"
+  } else {
+    requiredItems = "cook-ready";
+  }
+  return requiredItems;
 }
 
 function cookUserMeal(target) {
@@ -158,3 +176,15 @@ function cookUserMeal(target) {
     mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))
   })
 }
+
+function searchMeals(event) {
+  const searchItem = event.target.value.toLowerCase();
+  mealContainer.innerHTML = " ";
+  const filteredMeals = recipes.filter(meal => {
+    return meal.name.toLowerCase().includes(searchItem)
+  })
+  filteredMeals.map(recipe => {
+    mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))  
+  })
+};
+
