@@ -1,6 +1,6 @@
 # What's Cookin'? 
 
-This is the first Paired Project for the second Module of the Turing Front End Development Program. We were tasked with creating a meal preparation application that would focus on both TDD and OOP. The application allows a user to favorite certain recipes, see what meals they can cook from the available recipes, and if the are not able to cook said recipe, they will be provided with the list of ingredients needed and the approximate cost of the missing ingredients. 
+This was the first paired project for the second module of the Turing Front End Development Program. We were tasked with creating a meal preparation application that would focus on both TDD and OOP. The application allows a user to favorite certain recipes, see what meals they can cook from the available recipes, and if the are not able to cook said recipe, they will be provided with the list of ingredients needed and the approximate cost of the missing ingredients. 
 
 To build the application we used Javascript.
 
