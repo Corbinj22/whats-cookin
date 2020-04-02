@@ -77,7 +77,7 @@ function displayMeals(recipe) {
         <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
       </div>
       <div class="card-icon-container">
-        <img id="${recipe.id}" class="icon favorite-active ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="icon favorite-inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
         <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
       </div>
     </div>`
@@ -98,7 +98,7 @@ function displayHomePage() {
 }
 
 function displayFavoritesPage() {
-  favoritesPage.innerHTML = ' ';
+  
   user.favorites.map(recipe => {
     favoritesPage.insertAdjacentHTML('afterbegin', displayMeals(recipe));
   })
@@ -128,12 +128,14 @@ function favoriteValidate(targetRecipe) {
 }
 
 function toggleFavorite(event) {
-  if (event.target.classList.contains('favorite-active')) {
-    event.target.classList.remove('favorite-active')
-    event.target.src = "https://img.icons8.com/color/96/000000/hearts.png";
-  } else {
-    event.target.src = "https://img.icons8.com/windows/96/000000/hearts.png"
+  if (event.target.classList.contains('favorite-inactive')) {
+    event.target.classList.remove('favorite-inactive')
     event.target.classList.add('favorite-active')
+    event.target.src = "https://img.icons8.com/color/96/000000/hearts.png";
+  } else if (event.target.classList.contains('favorite-active')) {
+    event.target.src = "https://img.icons8.com/windows/96/000000/hearts.png"
+    event.target.classList.add('favorite-inactive')
+    event.target.classList.remove('favorite-active')
   }
 }
 
