@@ -6,6 +6,15 @@ class Recipe {
     this.instructions = recipeDetails.instructions;
     this.name = recipeDetails.name;
     this.tags = recipeDetails.tags;
+    this.favorite = false;
+  }
+
+    changeFavoriteStatus() {
+    if (!this.favorite) {
+      this.favorite = true;
+    } else {
+      this.favorite = false;
+    }
   }
 
   getTotalCost(allIngredients) {

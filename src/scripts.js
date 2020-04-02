@@ -66,6 +66,22 @@ let domSelectedMeal = {
   }
 }
 
+function favoriteClassToggle(recipe) {
+  if(recipe.favorite === false) {
+    return "favorite-inactive"
+  } else if (recipe.favorite === true) {
+      return "favorite-active"
+  }
+}
+
+function imgToggle(recipe) {
+  if(recipe.favorite === false) {
+    return "https://img.icons8.com/windows/96/000000/hearts.png"
+  } else if (recipe.favorite === true) {
+    return "https://img.icons8.com/color/96/000000/hearts.png"
+  }
+}
+
 function displayMeals(recipe) {
   toggleCanCook(recipe);
   return `
@@ -77,7 +93,7 @@ function displayMeals(recipe) {
         <img id="${recipe.id}" class="food-img" rel="food-img" src="${recipe.image}">
       </div>
       <div class="card-icon-container">
-        <img id="${recipe.id}" class="icon favorite-inactive ${recipe.name}" src="https://img.icons8.com/windows/96/000000/hearts.png"/>
+        <img id="${recipe.id}" class="icon ${favoriteClassToggle(recipe)} ${recipe.name}" src=${imgToggle(recipe)}/>
         <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
       </div>
     </div>`
@@ -85,8 +101,9 @@ function displayMeals(recipe) {
 
 function showMeals(mealData) {
   recipes = mealData.map(recipe => {
+    recipe = new Recipe(recipe)
     mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))
-    return new Recipe(recipe)
+    return recipe;
   })
 }
 
@@ -128,14 +145,17 @@ function favoriteValidate(targetRecipe) {
 }
 
 function toggleFavorite(event) {
+  let currentRecipe = recipes.find(recipe => recipe.id === parseInt(event.target.id))
   if (event.target.classList.contains('favorite-inactive')) {
     event.target.classList.remove('favorite-inactive')
     event.target.classList.add('favorite-active')
     event.target.src = "https://img.icons8.com/color/96/000000/hearts.png";
+    currentRecipe.changeFavoriteStatus()
   } else if (event.target.classList.contains('favorite-active')) {
     event.target.src = "https://img.icons8.com/windows/96/000000/hearts.png"
     event.target.classList.add('favorite-inactive')
     event.target.classList.remove('favorite-active')
+    currentRecipe.changeFavoriteStatus()
   }
 }
 
@@ -185,7 +205,6 @@ function searchMeals(event) {
     return meal.name.toLowerCase().includes(searchItem)
   })
   filteredMeals.map(recipe => {
-    mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))  
+    mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))
   })
 };
-

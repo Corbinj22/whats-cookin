@@ -34,7 +34,7 @@ describe('Recipe', function() {
     expect(recipe1.image).to.equal('https://spoonacular.com/recipeImages/595736-556x370.jpg');
   })
 
-  it.only('should have an array of required ingredients', function() {
+  it('should have an array of required ingredients', function() {
     expect(recipe1.ingredients).to.deep.equal([
       { id: 20081, quantity: { amount: 1.5, unit: 'c' } },
       { id: 18372, quantity: { amount: 0.5, unit: 'tsp' } },
@@ -90,7 +90,7 @@ describe('Recipe', function() {
     ])
   })
 
-  it.only('should be able to calculate total estimated cost of meal', function() {
+  it('should be able to calculate total estimated cost of meal', function() {
     var testRecipeCost = recipe1.getTotalCost(ingredientsTestData);
     expect(testRecipeCost).to.equal(17776)
   })
