@@ -37,7 +37,7 @@ describe('Pantry', function() {
 
   it('should return the items of the recipie not in the pantry', function() {
     const neededItems = pantry.requiredForMeal(recipe1)
-    expect(neededItems).to.deep.equal([ { id: 19206, quantity: { amount: 3, unit: 'Tbsp' } } ])
+    expect(neededItems).to.deep.equal([ 'instant vanilla pudding' ])
   });
 
   it('should remove items and quantities when a meal is cooked', function() {

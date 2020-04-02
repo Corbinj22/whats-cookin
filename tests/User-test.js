@@ -1,26 +1,31 @@
 const chai = require('chai');
 const expect = chai.expect;
-const Recipe = require('../src/Recipe');
-const User = require('../src/User');
-// const Pantry = require('../src/Pantry');
+const Recipe = require('../src/recipe');
+const User = require('../src/user');
+const Pantry = require('../src/pantry');
+
 let recipeDataTest = require('../tests/Recipe-test-data');
 let userTestData = require('../tests/user-test-data');
-// let ingredientsTestData = require('../tests/Ingredients-test-data');
+
 describe('User', function() {
   let recipe1, user;
   beforeEach(function() {
     recipe1 = new Recipe(recipeDataTest[0]);
     user = new User(userTestData);
   })
+  
   it('should be a function', function () {
     expect(User).to.be.a('function');
   })
+
   it('should have a name', function() {
     expect(user.name).to.deep.equal("Saige O'Kon");
   })
+
   it('should have an id', function() {
     expect(user.id).to.equal(1);
   })
+
   it('should have a pantry', function() {
     expect(user.pantry.pantry).to.deep.equal([
       {
@@ -169,6 +174,7 @@ describe('User', function() {
       }
     ]);
   })
+
   it('should be able to add recipe to the favorites list', function() {
     user.addToFavorites(recipe1);
     expect(user.favorites[0]).to.deep.equal(recipe1)
