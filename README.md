@@ -4,13 +4,15 @@ This was the first paired project for the second module of the Turing Front End 
 
 To build the application we used Javascript.
 
-## Set Up 
+### See the Application 
 
-You can access the application here: https://carflor.github.io/whats-cookin/
+You can view the application [here](https://carflor.github.io/whats-cookin/)
 
-## Testing 
+### Testing 
 
 For this application we utilized the mocha and chai libraries.
 
-### Application Images
+#### Application
+
+<iframe src="https://giphy.com/embed/ZGCuMB06KhK5B3yj6p" width="480" height="300" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/ZGCuMB06KhK5B3yj6p">via GIPHY</a></p>
 
