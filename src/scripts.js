@@ -143,7 +143,12 @@ function addMealToFavorites(target) {
 };
 
 function favoriteValidate(targetRecipe) {
-  !user.favorites.includes(targetRecipe) ? user.addToFavorites(targetRecipe) : null;
+  !user.favorites.includes(targetRecipe) ? user.addToFavorites(targetRecipe) : removeFromFavorites(targetRecipe);
+}
+
+function removeFromFavorites(recipe) {
+  let unfavorited = user.favorites.indexOf(recipe)
+  user.favorites.splice(unfavorited, 1)
 }
 
 function toggleFavorite(event) {
