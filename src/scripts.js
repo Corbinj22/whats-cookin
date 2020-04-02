@@ -98,7 +98,6 @@ function displayHomePage() {
 }
 
 function displayFavoritesPage() {
-  
   user.favorites.map(recipe => {
     favoritesPage.insertAdjacentHTML('afterbegin', displayMeals(recipe));
   })
@@ -188,3 +187,4 @@ function searchMeals(event) {
     mealContainer.insertAdjacentHTML('afterbegin', displayMeals(recipe))  
   })
 };
+
