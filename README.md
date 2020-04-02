@@ -12,8 +12,15 @@ You can view the application [here](https://carflor.github.io/whats-cookin/)
 
 For this application we utilized the mocha and chai libraries.
 
-#### Application
+#### Application Images
+A User can view a selection of meals. 
+![Uploading Screen Shot 2020-04-02 at 12.49.07 AM.png…]()
 
-https://giphy.com/gifs/ZGCuMB06KhK5B3yj6p/html5
+A user can click a meal to see its cost, cooking instructions and will be informed if their pantry is missing any items to cook the meal.
+![Uploading Screen Shot 2020-04-02 at 12.50.15 AM.png…]()
+
+A user can click a meal card heart icon and by clicking the "Favorites" tab, will be able to see any saved favorites.
+![Uploading Screen Shot 2020-04-02 at 12.51.28 AM.png…]()
+
 
 
