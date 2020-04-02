@@ -295,7 +295,7 @@ describe('Pantry', function() {
         name: 'oregano',
         estimatedCostInCents: 835
       }
-    ])
+      ])
   });
 
 });
