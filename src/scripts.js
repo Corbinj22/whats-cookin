@@ -68,22 +68,6 @@ let domSelectedMeal = {
   }
 }
 
-function favoriteClassToggle(recipe) {
-  if(recipe.favorite === false) {
-    return "favorite-inactive"
-  } else if (recipe.favorite === true) {
-    return "favorite-active"
-  }
-}
-
-function imgToggle(recipe) {
-  if(recipe.favorite === false) {
-    return "https://img.icons8.com/windows/96/000000/hearts.png"
-  } else if (recipe.favorite === true) {
-    return "https://img.icons8.com/color/96/000000/hearts.png"
-  }
-}
-
 function displayMeals(recipe) {
   toggleCanCook(recipe);
   return `
@@ -99,7 +83,7 @@ function displayMeals(recipe) {
         <img id="${recipe.id}" class="icon ${toggleCanCook(recipe)} ${recipe.name}" src="https://img.icons8.com/doodle/96/000000/pot---v1.png"/>
       </div>
     </div>`
-  }
+}
 
 function showMeals(mealData) {
   recipes = mealData.map(recipe => {
@@ -163,6 +147,22 @@ function toggleFavorite(event) {
     event.target.classList.add('favorite-inactive')
     event.target.classList.remove('favorite-active')
     currentRecipe.changeFavoriteStatus()
+  }
+}
+
+function favoriteClassToggle(recipe) {
+  if (recipe.favorite === false) {
+    return "favorite-inactive"
+  } else if (recipe.favorite === true) {
+    return "favorite-active"
+  }
+}
+
+function imgToggle(recipe) {
+  if (recipe.favorite === false) {
+    return "https://img.icons8.com/windows/96/000000/hearts.png"
+  } else if (recipe.favorite === true) {
+    return "https://img.icons8.com/color/96/000000/hearts.png"
   }
 }
 
